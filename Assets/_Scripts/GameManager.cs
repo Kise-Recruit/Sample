@@ -5,11 +5,12 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] PlayerCharacter playerCharacter;
+    [SerializeField] Player.PlayerCharacter playerCharacter;
     [SerializeField] EnemyFactory enemyFactory;
 
     void Start()
     {
+        playerCharacter.Init();
         enemyFactory.Init(playerCharacter.transform);
     }
 

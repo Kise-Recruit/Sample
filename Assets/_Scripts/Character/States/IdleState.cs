@@ -10,7 +10,11 @@ namespace Player
         public IdleState(PlayerCharacter player) => main = player;
 
         public PlayerState State => PlayerState.Idle;
-        public void Init() {}
+        public void Init() 
+        {
+            main.StartAnimation();
+        }
+
         public void Update() {}
         public void Exit() {}
 

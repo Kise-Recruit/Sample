@@ -10,7 +10,11 @@ namespace Player
         public JumpState(PlayerCharacter player) => main = player;
 
         public PlayerState State => PlayerState.Jump;
-        public void Init() {}
+        public void Init() 
+        {
+            main.StartAnimation();
+        }
+
         public void Update() {}
         public void Exit() {}
 

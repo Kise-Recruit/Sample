@@ -1,8 +1,8 @@
+using System;
 using System.Threading;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using System;
 
 namespace Enemy
 {
