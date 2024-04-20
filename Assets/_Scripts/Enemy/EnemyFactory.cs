@@ -11,6 +11,8 @@ namespace Enemy
         [SerializeField] Transform enemysParentTransform;
         [SerializeField] List<EnemysPreset> enemyPresetList = new List<EnemysPreset>();
 
+        private const float GENERATE_COOL_TIME = 2.0f;
+
         private float generateTimer = 0.0f;
         private Transform playerTransform;
         private Transform[] spownPositionList;
@@ -18,7 +20,10 @@ namespace Enemy
         public void Init(Transform playerTransform)
         {
             this.playerTransform = playerTransform;
-            spownPositionList = spownPointTransform.GetComponentsInChildren<Transform>();
+
+            var spownPoints = spownPointTransform.GetComponentsInChildren<Transform>();
+            spownPositionList = new Transform[spownPoints.Length];
+            spownPositionList = spownPoints;
         }
 
         void Update()
@@ -27,6 +32,12 @@ namespace Enemy
 
             if (generateTimer <= 0.0f)
             {
+                generateTimer = GENERATE_COOL_TIME;
+
+                if (spownPositionList.Length == 0 || enemyPresetList.Count == 0)
+                {
+                    Debug.LogWarning("(EnemyFactory) 生成に必要な情報が足りません");
+                }
                 GenerateEnemyPreset();
             }
         }

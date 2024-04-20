@@ -6,15 +6,13 @@ using System;
 
 namespace Enemy
 {
-    [RequireComponent(typeof(Animator))]
-
     public class EnemyBase : MonoBehaviour
     {
-        private static readonly int IdleAnimHash = Animator.StringToHash("Idle");
-        private static readonly int MoveAnimHash = Animator.StringToHash("Move");
+        private static readonly int IdleAnimHash = Animator.StringToHash("Idle_A");
+        private static readonly int MoveAnimHash = Animator.StringToHash("Walk");
         private static readonly int AttackAnimHash = Animator.StringToHash("Attack");
-        private static readonly int ReceiveDmageAnimHash = Animator.StringToHash("ReceiveDmage");
-        private static readonly int DieAnimHash = Animator.StringToHash("Die");
+        private static readonly int ReceiveDmageAnimHash = Animator.StringToHash("Hit");
+        private static readonly int DieAnimHash = Animator.StringToHash("Death");
         private static readonly int RECEIVE_DAMAGE_COOL_TIME = 500;
 
         private IEnemyState currentState;
@@ -33,7 +31,7 @@ namespace Enemy
             animator = GetComponent<Animator>();
 
             CreateStateDictionary();
-            ChangeState(EnemyState.Idle);
+            ChangeState(EnemyState.Move);
         }
 
         private void CreateStateDictionary()
