@@ -9,11 +9,12 @@ namespace Player
 {
     public class PlayerCharacter : MonoBehaviour
     {
-        private static readonly int IdleAnimHash = Animator.StringToHash("Idle_A");
-        private static readonly int MoveAnimHash = Animator.StringToHash("Walk");
-        private static readonly int AttackAnimHash = Animator.StringToHash("Attack");
-        private static readonly int ReceiveDmageAnimHash = Animator.StringToHash("Hit");
-        private static readonly int DieAnimHash = Animator.StringToHash("Death");
+        private static readonly int IdleAnimHash = Animator.StringToHash("Idle");
+        private static readonly int MoveAnimHash = Animator.StringToHash("Move");
+        private static readonly int JumpAnimHash = Animator.StringToHash("Jump");
+        private static readonly int AttackAnimHash = Animator.StringToHash("WAIT04");
+        private static readonly int ReceiveDmageAnimHash = Animator.StringToHash("DAMAGED00");
+        private static readonly int DieAnimHash = Animator.StringToHash("DAMAGED01");
         private static readonly int RECEIVE_DAMAGE_COOL_TIME = 500;
 
         private bool IsJumpable => currentState.State == PlayerState.Idle || currentState.State == PlayerState.Move;
@@ -21,7 +22,7 @@ namespace Player
 
         private IPlayerState currentState;
         private IPlayerState prevState;
-         private Dictionary<PlayerState, IPlayerState> stateDictionary;
+        private Dictionary<PlayerState, IPlayerState> stateDictionary;
         private Animator animator;
         private int hp = 100;
         private bool isReceivingDamage = true;
@@ -100,6 +101,10 @@ namespace Player
 
                 case PlayerState.Move:
                     animator.Play(MoveAnimHash);
+                    break;
+
+                case PlayerState.Jump:
+                    animator.Play(JumpAnimHash);
                     break;
 
                 case PlayerState.Attack:
