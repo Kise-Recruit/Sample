@@ -21,6 +21,11 @@ namespace Player
 
         public void Update()
         {
+            if (main.UltimateInput.phase == UnityEngine.InputSystem.InputActionPhase.Started)
+            {
+                main.ChangeState(PlayerState.Ultimate);
+            }
+
             var inputValue = main.MoveInput.ReadValue<Vector2>();
     
             if (inputValue == Vector2.zero)

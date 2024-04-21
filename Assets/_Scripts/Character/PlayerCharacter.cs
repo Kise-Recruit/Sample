@@ -24,6 +24,8 @@ namespace Player
         public InputAction MoveInput => moveInput;
         private InputAction attackInput;
         public InputAction AttackInput => attackInput;
+        private InputAction ultimateInput;
+        public InputAction UltimateInput => ultimateInput;
 
         [SerializeField] AttackHitBox normalAttackHitBox;
         [SerializeField] AttackHitBox ultimateAttackHitBox;
@@ -44,9 +46,10 @@ namespace Player
             playerInput = GetComponent<PlayerInput>();
             moveInput = playerInput.actions["Move"];
             attackInput = playerInput.actions["Attack"];
+            ultimateInput = playerInput.actions["Ultimate"];
 
             normalAttackHitBox.Init(NORMAL_ATTACK_POW);
-            // ultimateAttackHitBox.Init(ULTIMATE_ATTACK_POW);
+            ultimateAttackHitBox.Init(ULTIMATE_ATTACK_POW);
 
             CreateStateDictionary();
             ChangeState(PlayerState.Idle);
@@ -67,7 +70,7 @@ namespace Player
                 // 攻撃
                 { PlayerState.Attack, new AttackState(this, () => normalAttackHitBox.OnAttackStart(), () => normalAttackHitBox.OnAttackEnd()) },
                 // 必殺
-                { PlayerState.Ultimate, new UltimateState(this) },
+                { PlayerState.Ultimate, new UltimateState(this, () => ultimateAttackHitBox.OnAttackStart(), () => ultimateAttackHitBox.OnAttackEnd()) },
                 // 攻撃を受けた時
                 { PlayerState.ReceiveDamage, new ReceiveDamageState(this) },
                 // 死亡時
