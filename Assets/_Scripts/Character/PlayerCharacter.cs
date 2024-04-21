@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Cinemachine;
 
 namespace Player
 {
@@ -16,6 +17,7 @@ namespace Player
         private static readonly int AttackAnimHash = Animator.StringToHash("Attack");
         private static readonly int ReceiveDmageAnimHash = Animator.StringToHash("DAMAGED00");
         private static readonly int DieAnimHash = Animator.StringToHash("DAMAGED01");
+        private static readonly int UltimateAttackScaleHash = Animator.StringToHash("Scale");
         private static readonly int RECEIVE_DAMAGE_COOL_TIME = 500;
         private static readonly int NORMAL_ATTACK_POW = 100;
         private static readonly int ULTIMATE_ATTACK_POW = 100;
@@ -29,6 +31,16 @@ namespace Player
 
         [SerializeField] AttackHitBox normalAttackHitBox;
         [SerializeField] AttackHitBox ultimateAttackHitBox;
+
+        // Ultimateのカメラワーク用
+        [SerializeField] CinemachineBrain brainCamera;
+        [SerializeField] CinemachineVirtualCamera defaultCamera;
+        [SerializeField] List<CinemachineVirtualCamera> ultimateVirtualCameras;
+
+        public CinemachineVirtualCamera DefaultCamera => defaultCamera;
+        public CinemachineBrain BrainCamera => brainCamera;
+        public List<CinemachineVirtualCamera> UltimateVirtualCameras => ultimateVirtualCameras;
+
         private IPlayerState currentState;
         private IPlayerState prevState;
         private Dictionary<PlayerState, IPlayerState> stateDictionary;
@@ -113,6 +125,10 @@ namespace Player
                 case PlayerState.Attack:
                     playAnimHash = AttackAnimHash;
                     break;
+                    
+                case PlayerState.Ultimate:
+                    playAnimHash = AttackAnimHash;
+                    break;
 
                 case PlayerState.ReceiveDamage:
                     animator.Play(ReceiveDmageAnimHash);
@@ -141,6 +157,11 @@ namespace Player
             {
                 ReceiveDmage(5);
             }
+        }
+
+        void OnDestroy()
+        {
+            currentState?.Exit();
         }
 
         public void ReceiveDmage(int attackPower)
@@ -191,6 +212,11 @@ namespace Player
             {
                 onEndAnimation?.Invoke();
             }
+        }
+
+        public void SetAnimSpeedScale(float scale)
+        {
+            animator.SetFloat("Scale", scale);
         }
     }
 }

@@ -29,6 +29,11 @@ namespace Player
             {
                 main.ChangeState(PlayerState.Attack);
             }
+
+            if (main.UltimateInput.phase == UnityEngine.InputSystem.InputActionPhase.Performed)
+            {
+                main.ChangeState(PlayerState.Ultimate);
+            }
         }
 
         public void Exit() {}
