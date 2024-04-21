@@ -4,6 +4,7 @@ using System.Threading;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using Cinemachine;
 
@@ -36,10 +37,15 @@ namespace Player
         [SerializeField] CinemachineBrain brainCamera;
         [SerializeField] CinemachineVirtualCamera defaultCamera;
         [SerializeField] List<CinemachineVirtualCamera> ultimateVirtualCameras;
+        [SerializeField] UltimateTextureCreater ultimateTextureCreater;
+        [SerializeField] BreakWindow breakeWindow;
+        [SerializeField] RawImage ultimateBreakImage;
 
         public CinemachineVirtualCamera DefaultCamera => defaultCamera;
         public CinemachineBrain BrainCamera => brainCamera;
         public List<CinemachineVirtualCamera> UltimateVirtualCameras => ultimateVirtualCameras;
+        public BreakWindow BreakeWindow => breakeWindow;
+        public RawImage UltimateBreakImage => ultimateBreakImage;
 
         private IPlayerState currentState;
         private IPlayerState prevState;
@@ -82,7 +88,7 @@ namespace Player
                 // 攻撃
                 { PlayerState.Attack, new AttackState(this, () => normalAttackHitBox.OnAttackStart(), () => normalAttackHitBox.OnAttackEnd()) },
                 // 必殺
-                { PlayerState.Ultimate, new UltimateState(this, () => ultimateAttackHitBox.OnAttackStart(), () => ultimateAttackHitBox.OnAttackEnd()) },
+                { PlayerState.Ultimate, new UltimateState(this, () => ultimateAttackHitBox.OnAttackStart(), () => ultimateAttackHitBox.OnAttackEnd(), () => StartCoroutine(ultimateTextureCreater.CreateRenderTexture()) ) },
                 // 攻撃を受けた時
                 { PlayerState.ReceiveDamage, new ReceiveDamageState(this) },
                 // 死亡時

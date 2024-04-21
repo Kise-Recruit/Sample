@@ -12,18 +12,19 @@ namespace Player
         private PlayerCharacter main;
         private Action onStartAttack;
         private Action onEndAttack;
+        private Action cleateUltimateTexture;
         private CancellationTokenSource cts;
-        private float animPlayScale = 1.0f;
 
         private Dictionary<CinemachineVirtualCamera, float> ultimateCameraDictionary = new Dictionary<CinemachineVirtualCamera, float>();
 
         public PlayerState State => PlayerState.Ultimate;
 
-        public UltimateState(PlayerCharacter player, Action onStartAttack, Action onEndAttack)
+        public UltimateState(PlayerCharacter player, Action onStartAttack, Action onEndAttack, Action cleateUltimateTexture)
         {
             main = player;
             this.onStartAttack = onStartAttack;
             this.onEndAttack = onEndAttack;
+            this.cleateUltimateTexture = cleateUltimateTexture;
 
             // カメラのブレンドリストから、カメラ＋遷移の時間の Dictionary を作成
             var camerablends = main.BrainCamera.m_CustomBlends.m_CustomBlends;
@@ -76,6 +77,12 @@ namespace Player
                 else if (item.Key.gameObject.name == "ChangeCamera_4")
                 {
                     main.SetAnimSpeedScale(1.0f);
+                    cleateUltimateTexture();
+                }
+                else if (item.Key.gameObject.name == "ChangeCamera_5")
+                {
+                    main.UltimateBreakImage.enabled = true;
+                    main.BreakeWindow.BreakStart();
                 }
                 else
                 {
@@ -104,6 +111,7 @@ namespace Player
             onEndAttack();
 
             // 通常のカメラに戻す
+            main.UltimateBreakImage.enabled = false;
             main.DefaultCamera.enabled = true;
 
             // 必殺用の全カメラを戻す
