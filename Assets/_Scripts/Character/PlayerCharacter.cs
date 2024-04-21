@@ -17,6 +17,8 @@ namespace Player
         private static readonly int ReceiveDmageAnimHash = Animator.StringToHash("DAMAGED00");
         private static readonly int DieAnimHash = Animator.StringToHash("DAMAGED01");
         private static readonly int RECEIVE_DAMAGE_COOL_TIME = 500;
+        private static readonly int NORMAL_ATTACK_POW = 100;
+        private static readonly int ULTIMATE_ATTACK_POW = 100;
 
         private InputAction moveInput;
         public InputAction MoveInput => moveInput;
@@ -33,7 +35,7 @@ namespace Player
         private bool isReceivingDamage = true;
         private PlayerInput playerInput;
 
-        public int AttackPow => currentState.State == PlayerState.Attack ? 30 : 100;
+        public float GetAnimationPlayTime => animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
 
         public void Init()
         {
@@ -43,8 +45,8 @@ namespace Player
             moveInput = playerInput.actions["Move"];
             attackInput = playerInput.actions["Attack"];
 
-            normalAttackHitBox.Init(30);
-            // ultimateAttackHitBox.Init(100);
+            normalAttackHitBox.Init(NORMAL_ATTACK_POW);
+            // ultimateAttackHitBox.Init(ULTIMATE_ATTACK_POW);
 
             CreateStateDictionary();
             ChangeState(PlayerState.Idle);
@@ -121,13 +123,12 @@ namespace Player
                     break;
             }
 
-            if (onEndAnimation == null)
+            animator.Play(playAnimHash);
+            animator.Update(0);
+
+            if (onEndAnimation != null)
             {
-                animator.Play(playAnimHash);
-            }
-            else
-            {
-                AnimationPlayFlow(playAnimHash, onEndAnimation).Forget();
+                AnimationPlayFlow(onEndAnimation).Forget();
             }
         }
 
@@ -170,10 +171,9 @@ namespace Player
             isReceivingDamage = false;
         }
 
-        private async UniTask AnimationPlayFlow(int animHash, Action onEndAnimation = null)
+        private async UniTask AnimationPlayFlow(Action onEndAnimation = null)
         {
             var token = this.GetCancellationTokenOnDestroy();
-            animator.Play(animHash);
 
             await UniTask.Yield();
             if (token.IsCancellationRequested)

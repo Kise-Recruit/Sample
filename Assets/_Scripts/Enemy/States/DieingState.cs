@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Enemy
@@ -15,7 +16,14 @@ namespace Enemy
             main.StartAnimation();
         }
 
-        public void Update() {}
+        public void Update() 
+        {
+            if (main.GetAnimationPlayTime >= 0.9f)
+            {
+                main.DieFinish();                
+            }
+        }
+
         public void Exit() {}
     }
 }

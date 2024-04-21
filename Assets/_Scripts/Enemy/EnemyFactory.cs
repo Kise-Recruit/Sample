@@ -52,6 +52,8 @@ namespace Enemy
             int enemypresetRndIndex = UnityEngine.Random.Range(0, enemyPresetList.Count);
             EnemysPreset newPreset = Instantiate(enemyPresetList[enemypresetRndIndex], spownPositionList[spownRndIndex].position, Quaternion.identity);
             newPreset.SetUpEnemys(playerTransform, enemysParentTransform);
+
+            Destroy(newPreset.gameObject);
         }
     }
 }

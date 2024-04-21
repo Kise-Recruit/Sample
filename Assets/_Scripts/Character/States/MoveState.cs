@@ -34,7 +34,7 @@ namespace Player
             // 方向キーの入力値とカメラの向きから、移動方向を決定
             Vector3 targetMoveVec = cameraForward * inputValue.y + Camera.main.transform.right * inputValue.x;
 
-            main.transform.position += targetMoveVec.normalized * Time.deltaTime;
+            main.transform.position += targetMoveVec.normalized * Time.deltaTime * 3;
             main.transform.forward = Vector3.Slerp(main.transform.forward, targetMoveVec, ROTATE_TIME);
         }
 

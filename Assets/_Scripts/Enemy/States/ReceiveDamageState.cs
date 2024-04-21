@@ -20,6 +20,7 @@ namespace Enemy
             knockBackVeck = main.transform.position - main.PlayerPosition;
             knockBackVeck.y = 0;
             knockBackVeck.Normalize();
+            knockBackVeck *= 2.0f;
             knockBackTime = 0.0f;
         }
 
@@ -28,7 +29,7 @@ namespace Enemy
             main.transform.position += knockBackVeck * Time.deltaTime;
             knockBackTime += Time.deltaTime;
 
-            if (knockBackTime >= 0.6f)
+            if (knockBackTime >= 2.0f)
             {
                 main.ChangeState(EnemyState.Move);
             }

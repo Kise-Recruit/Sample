@@ -14,7 +14,7 @@ namespace Enemy
         private static readonly int AttackAnimHash = Animator.StringToHash("Attack");
         private static readonly int ReceiveDmageAnimHash = Animator.StringToHash("Hit");
         private static readonly int DieAnimHash = Animator.StringToHash("Death");
-        private static readonly int RECEIVE_DAMAGE_COOL_TIME = 500;
+        private static readonly int RECEIVE_DAMAGE_COOL_TIME = 1500;
 
         private IEnemyState currentState;
         private IEnemyState prevState;
@@ -26,6 +26,8 @@ namespace Enemy
 
         private Transform playerTransform = null;
         public Vector3 PlayerPosition => playerTransform.position;
+
+        public float GetAnimationPlayTime => animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
 
         public void Init(Transform playerTransform)
         {
@@ -99,6 +101,8 @@ namespace Enemy
                 default:
                     break;
             }
+
+            animator.Update(0);
         }
 
         void OnTriggerEnter(Collider other)
@@ -123,6 +127,7 @@ namespace Enemy
             }
 
             hp -= attackPower;
+            isReceivingDamage = false;
 
             if (hp <= 0)
             {
@@ -139,7 +144,12 @@ namespace Enemy
         {
             var token = this.GetCancellationTokenOnDestroy();
             await UniTask.Delay(TimeSpan.FromMilliseconds(RECEIVE_DAMAGE_COOL_TIME), false, PlayerLoopTiming.Update, token);
-            isReceivingDamage = false;
+            isReceivingDamage = true;
+        }
+
+        public void DieFinish()
+        {
+            Destroy(gameObject);
         }
     }
 }
