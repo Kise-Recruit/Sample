@@ -1,26 +1,17 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Player
 {
     public class MoveState : IPlayerState
     {
-        private const float MOVE_SPEED = 10.0f;
         private const float ROTATE_TIME = 0.2f;
 
         private PlayerCharacter main;
-        private InputAction moveInput;
-        private Action changeIdleState;
         public PlayerState State => PlayerState.Move;
 
-        public MoveState(PlayerCharacter player, PlayerInput playerInput, Action changeIdleState)
+        public MoveState(PlayerCharacter player)
         {
             main = player;
-            moveInput = playerInput.actions["Move"];
-            this.changeIdleState = changeIdleState;
         }
 
         public void Init()
@@ -30,11 +21,11 @@ namespace Player
 
         public void Update()
         {
-            var inputValue = moveInput.ReadValue<Vector2>();
+            var inputValue = main.MoveInput.ReadValue<Vector2>();
     
             if (inputValue == Vector2.zero)
             {
-                changeIdleState();
+                main.ChangeState(PlayerState.Idle);
             }
 
             // カメラの方向から、X-Z平面の単位ベクトルを取得

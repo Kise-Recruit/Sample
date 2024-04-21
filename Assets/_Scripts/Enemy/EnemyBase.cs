@@ -3,6 +3,7 @@ using System.Threading;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Player;
 
 namespace Enemy
 {
@@ -21,6 +22,7 @@ namespace Enemy
         private Animator animator;
         private int hp = 100;
         private bool isReceivingDamage = true;
+        private BoxCollider hitBoxCollider;
 
         private Transform playerTransform = null;
         public Vector3 PlayerPosition => playerTransform.position;
@@ -28,6 +30,8 @@ namespace Enemy
         public void Init(Transform playerTransform)
         {
             this.playerTransform = playerTransform;
+
+            hitBoxCollider = GetComponent<BoxCollider>();
             animator = GetComponent<Animator>();
 
             CreateStateDictionary();
@@ -54,7 +58,7 @@ namespace Enemy
             stateDictionary = dic;
         }
 
-        private void ChangeState(EnemyState nextState)
+        public void ChangeState(EnemyState nextState)
         {
             IEnemyState newState = stateDictionary[nextState];
             prevState = currentState;
@@ -97,6 +101,15 @@ namespace Enemy
             }
         }
 
+        void OnTriggerEnter(Collider other)
+        {
+            if(other.gameObject.tag == "Attack")
+            {
+                AttackHitBox hitBox = other.GetComponent<AttackHitBox>();
+                ReceiveDmage(hitBox.AttackPow);
+            }
+        }
+
         public void ReceiveDmage(int attackPower)
         {
             if (currentState.State == EnemyState.Die)
@@ -117,13 +130,14 @@ namespace Enemy
             }
             else
             {
-                var ctn = this.GetCancellationTokenOnDestroy();
-                ReceivableDamageCoolTimeAsync(ctn).Forget();
+                ChangeState(EnemyState.ReceiveDamage);
+                ReceivableDamageCoolTimeAsync().Forget();
             }
         }
 
-        private async UniTask ReceivableDamageCoolTimeAsync(CancellationToken token)
+        private async UniTask ReceivableDamageCoolTimeAsync()
         {
+            var token = this.GetCancellationTokenOnDestroy();
             await UniTask.Delay(TimeSpan.FromMilliseconds(RECEIVE_DAMAGE_COOL_TIME), false, PlayerLoopTiming.Update, token);
             isReceivingDamage = false;
         }

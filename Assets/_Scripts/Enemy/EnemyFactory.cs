@@ -38,9 +38,7 @@ namespace Enemy
 
         private async UniTask ReceivableDamageCoolTimeAsync(CancellationToken token)
         {
-            token.ThrowIfCancellationRequested();
-
-            while(token.IsCancellationRequested)
+            while(!token.IsCancellationRequested)
             {
                 GenerateEnemyPreset();
                 await UniTask.Delay(TimeSpan.FromMilliseconds(GENERATE_COOL_TIME), false, PlayerLoopTiming.Update, token);
