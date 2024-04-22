@@ -8,11 +8,12 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: UltimateBreakMaterial
-  m_Shader: {fileID: 4800000, guid: b7575c01ebb55f145ab622f2c654a4b8, type: 3}
+  m_Shader: {fileID: 4800000, guid: 0197b117b57a3584aba3b3439df13bdf, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - _ZWRITE_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -61,7 +62,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _BlendDst: 10
+    - _BlendSrc: 5
     - _BumpScale: 1
+    - _ChromaKeyBrightnessRange: 0.5
+    - _ChromaKeyHueRange: 0.1
+    - _ChromaKeySaturationRange: 0.5
+    - _Cull: 2
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -79,6 +86,7 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
+    - _ChromaKeyColor: {r: 0.9964242, g: 0, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _KeyColor: {r: 1, g: 0, b: 1, a: 1}

@@ -81,7 +81,8 @@ namespace Player
                 }
                 else if (item.Key.gameObject.name == "ChangeCamera_5")
                 {
-                    main.UltimateBreakImage.enabled = true;
+                    // main.OnlyBreakWindowCamera.enabled = false;
+                    main.UltimateBreakWindow.SetActive(true);
                     main.BreakeWindow.BreakStart();
                 }
                 else
@@ -89,7 +90,6 @@ namespace Player
                     main.SetAnimSpeedScale(1.0f);
                 }
 
-                UnityEngine.Debug.Log(item.Key.gameObject.name);
                 item.Key.enabled = false;
                 await UniTask.Delay(TimeSpan.FromMilliseconds(item.Value * 1000.0f), false, PlayerLoopTiming.Update, token);
 
@@ -111,7 +111,7 @@ namespace Player
             onEndAttack();
 
             // 通常のカメラに戻す
-            main.UltimateBreakImage.enabled = false;
+            main.UltimateBreakWindow.SetActive(false);
             main.DefaultCamera.enabled = true;
 
             // 必殺用の全カメラを戻す

@@ -8,6 +8,7 @@ namespace Player
 
         private PlayerCharacter main;
         public PlayerState State => PlayerState.Move;
+        private Vector3 latestPos;
 
         public MoveState(PlayerCharacter player)
         {
@@ -17,6 +18,7 @@ namespace Player
         public void Init()
         {
             main.StartAnimation();
+            latestPos = main.transform.position;
         }
 
         public void Update()
@@ -40,7 +42,7 @@ namespace Player
             Vector3 targetMoveVec = cameraForward * inputValue.y + Camera.main.transform.right * inputValue.x;
 
             main.transform.position += targetMoveVec.normalized * Time.deltaTime * 3;
-            main.transform.forward = Vector3.Slerp(main.transform.forward, targetMoveVec, ROTATE_TIME);
+            // main.transform.forward = Vector3.Slerp(main.transform.forward, targetMoveVec, ROTATE_TIME);
         }
 
         public void Exit() {}

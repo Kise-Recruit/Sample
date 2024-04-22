@@ -38,14 +38,16 @@ namespace Player
         [SerializeField] CinemachineVirtualCamera defaultCamera;
         [SerializeField] List<CinemachineVirtualCamera> ultimateVirtualCameras;
         [SerializeField] UltimateTextureCreater ultimateTextureCreater;
+        [SerializeField] Camera onlyBreakWindowCamera;
         [SerializeField] BreakWindow breakeWindow;
-        [SerializeField] RawImage ultimateBreakImage;
+        [SerializeField] GameObject ultimateBreakWindow;
 
         public CinemachineVirtualCamera DefaultCamera => defaultCamera;
         public CinemachineBrain BrainCamera => brainCamera;
         public List<CinemachineVirtualCamera> UltimateVirtualCameras => ultimateVirtualCameras;
         public BreakWindow BreakeWindow => breakeWindow;
-        public RawImage UltimateBreakImage => ultimateBreakImage;
+        public GameObject UltimateBreakWindow => ultimateBreakWindow;
+        public Camera OnlyBreakWindowCamera => onlyBreakWindowCamera;
 
         private IPlayerState currentState;
         private IPlayerState prevState;

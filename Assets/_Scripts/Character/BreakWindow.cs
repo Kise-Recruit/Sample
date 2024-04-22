@@ -11,7 +11,6 @@ public class BreakWindow : MonoBehaviour
     void Start()
     {
         rigidBodies = GetComponentsInChildren<Rigidbody>();
-        Debug.Log(rigidBodies.Length);
     }
 
     public void BreakStart()
@@ -19,15 +18,15 @@ public class BreakWindow : MonoBehaviour
         foreach (Rigidbody rb in rigidBodies)
         {
             rb.isKinematic = false;
-            rb.useGravity = true;
+            rb.useGravity = false;
 
-            Vector3 vec = rb.transform.position - explosionPoint.position;
-            vec.Normalize();
+            float rndX = Random.Range(-2.0f, 2.0f);
+            float rndY = Random.Range(0.0f, 1.5f);
+            float rndZ = Random.Range(0.0f, 1.0f);
+
+            Vector3 vec = new Vector3(rndX, rndY, rndZ);
+            vec *= 100.0f;
             rb.AddForce(vec);
-
-            Debug.Log(vec);
-
-            // rb.AddExplosionForce(explodeForce, explosionPoint.position, explodeRange, 0, ForceMode.Impulse);
         }
     }
 }
