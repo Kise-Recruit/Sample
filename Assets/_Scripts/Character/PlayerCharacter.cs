@@ -32,6 +32,7 @@ namespace Player
 
         [SerializeField] AttackHitBox normalAttackHitBox;
         [SerializeField] AttackHitBox ultimateAttackHitBox;
+        [SerializeField] Transform playerModel;
 
         // Ultimateのカメラワーク用
         [SerializeField] CinemachineBrain brainCamera;
@@ -48,6 +49,7 @@ namespace Player
         public BreakWindow BreakeWindow => breakeWindow;
         public GameObject UltimateBreakWindow => ultimateBreakWindow;
         public Camera OnlyBreakWindowCamera => onlyBreakWindowCamera;
+        public Transform PlayerModel => playerModel;
 
         private IPlayerState currentState;
         private IPlayerState prevState;

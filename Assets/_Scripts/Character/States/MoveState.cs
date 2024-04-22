@@ -42,7 +42,7 @@ namespace Player
             Vector3 targetMoveVec = cameraForward * inputValue.y + Camera.main.transform.right * inputValue.x;
 
             main.transform.position += targetMoveVec.normalized * Time.deltaTime * 3;
-            // main.transform.forward = Vector3.Slerp(main.transform.forward, targetMoveVec, ROTATE_TIME);
+            main.PlayerModel.forward = Vector3.Slerp(main.PlayerModel.forward, targetMoveVec, ROTATE_TIME);
         }
 
         public void Exit() {}
