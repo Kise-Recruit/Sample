@@ -4,7 +4,9 @@ using System.Threading;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using Cinemachine;
 
 namespace Player
 {
@@ -16,6 +18,7 @@ namespace Player
         private static readonly int AttackAnimHash = Animator.StringToHash("Attack");
         private static readonly int ReceiveDmageAnimHash = Animator.StringToHash("DAMAGED00");
         private static readonly int DieAnimHash = Animator.StringToHash("DAMAGED01");
+        private static readonly int UltimateAttackScaleHash = Animator.StringToHash("Scale");
         private static readonly int RECEIVE_DAMAGE_COOL_TIME = 500;
         private static readonly int NORMAL_ATTACK_POW = 100;
         private static readonly int ULTIMATE_ATTACK_POW = 100;
@@ -29,6 +32,23 @@ namespace Player
 
         [SerializeField] AttackHitBox normalAttackHitBox;
         [SerializeField] AttackHitBox ultimateAttackHitBox;
+
+        // Ultimateのカメラワーク用
+        [SerializeField] CinemachineBrain brainCamera;
+        [SerializeField] CinemachineVirtualCamera defaultCamera;
+        [SerializeField] List<CinemachineVirtualCamera> ultimateVirtualCameras;
+        [SerializeField] UltimateTextureCreater ultimateTextureCreater;
+        [SerializeField] Camera onlyBreakWindowCamera;
+        [SerializeField] BreakWindow breakeWindow;
+        [SerializeField] GameObject ultimateBreakWindow;
+
+        public CinemachineVirtualCamera DefaultCamera => defaultCamera;
+        public CinemachineBrain BrainCamera => brainCamera;
+        public List<CinemachineVirtualCamera> UltimateVirtualCameras => ultimateVirtualCameras;
+        public BreakWindow BreakeWindow => breakeWindow;
+        public GameObject UltimateBreakWindow => ultimateBreakWindow;
+        public Camera OnlyBreakWindowCamera => onlyBreakWindowCamera;
+
         private IPlayerState currentState;
         private IPlayerState prevState;
         private Dictionary<PlayerState, IPlayerState> stateDictionary;
@@ -70,7 +90,7 @@ namespace Player
                 // 攻撃
                 { PlayerState.Attack, new AttackState(this, () => normalAttackHitBox.OnAttackStart(), () => normalAttackHitBox.OnAttackEnd()) },
                 // 必殺
-                { PlayerState.Ultimate, new UltimateState(this, () => ultimateAttackHitBox.OnAttackStart(), () => ultimateAttackHitBox.OnAttackEnd()) },
+                { PlayerState.Ultimate, new UltimateState(this, () => ultimateAttackHitBox.OnAttackStart(), () => ultimateAttackHitBox.OnAttackEnd(), () => StartCoroutine(ultimateTextureCreater.CreateRenderTexture()) ) },
                 // 攻撃を受けた時
                 { PlayerState.ReceiveDamage, new ReceiveDamageState(this) },
                 // 死亡時
@@ -113,6 +133,10 @@ namespace Player
                 case PlayerState.Attack:
                     playAnimHash = AttackAnimHash;
                     break;
+                    
+                case PlayerState.Ultimate:
+                    playAnimHash = AttackAnimHash;
+                    break;
 
                 case PlayerState.ReceiveDamage:
                     animator.Play(ReceiveDmageAnimHash);
@@ -141,6 +165,11 @@ namespace Player
             {
                 ReceiveDmage(5);
             }
+        }
+
+        void OnDestroy()
+        {
+            currentState?.Exit();
         }
 
         public void ReceiveDmage(int attackPower)
@@ -191,6 +220,11 @@ namespace Player
             {
                 onEndAnimation?.Invoke();
             }
+        }
+
+        public void SetAnimSpeedScale(float scale)
+        {
+            animator.SetFloat("Scale", scale);
         }
     }
 }
