@@ -38,7 +38,6 @@ namespace Player
         public void Init() 
         {
             main.StartAnimation();
-            onStartAttack();
 
             // ウルト用のカメラにする
             main.DefaultCamera.enabled = false;
@@ -81,9 +80,13 @@ namespace Player
                 }
                 else if (item.Key.gameObject.name == "ChangeCamera_5")
                 {
-                    // main.OnlyBreakWindowCamera.enabled = false;
                     main.UltimateBreakWindow.SetActive(true);
                     main.BreakeWindow.BreakStart();
+
+                    main.UltimateImpactEffect.gameObject.SetActive(true);
+                    main.UltimateImpactEffect.Play();
+
+                    onStartAttack();
                 }
                 else
                 {
@@ -99,6 +102,8 @@ namespace Player
                 }
             }
 
+            onEndAttack();
+
             while(main.GetAnimationPlayTime < 0.95f)
             {
                 await UniTask.Yield(token);
@@ -108,7 +113,6 @@ namespace Player
                 }
             }
 
-            onEndAttack();
 
             // 通常のカメラに戻す
             main.UltimateBreakWindow.SetActive(false);

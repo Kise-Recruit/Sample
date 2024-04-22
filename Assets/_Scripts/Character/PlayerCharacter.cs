@@ -34,7 +34,7 @@ namespace Player
         [SerializeField] AttackHitBox ultimateAttackHitBox;
         [SerializeField] Transform playerModel;
 
-        // Ultimateのカメラワーク用
+        // Ultimate用
         [SerializeField] CinemachineBrain brainCamera;
         [SerializeField] CinemachineVirtualCamera defaultCamera;
         [SerializeField] List<CinemachineVirtualCamera> ultimateVirtualCameras;
@@ -42,6 +42,8 @@ namespace Player
         [SerializeField] Camera onlyBreakWindowCamera;
         [SerializeField] BreakWindow breakeWindow;
         [SerializeField] GameObject ultimateBreakWindow;
+        [SerializeField] ParticleSystem ultimateImpactEffect;
+        [SerializeField] ParticleSystem ultimateFinishEffect;
 
         public CinemachineVirtualCamera DefaultCamera => defaultCamera;
         public CinemachineBrain BrainCamera => brainCamera;
@@ -50,6 +52,8 @@ namespace Player
         public GameObject UltimateBreakWindow => ultimateBreakWindow;
         public Camera OnlyBreakWindowCamera => onlyBreakWindowCamera;
         public Transform PlayerModel => playerModel;
+        public ParticleSystem UltimateImpactEffect => ultimateImpactEffect;
+        public ParticleSystem UltimateFinishEffect => ultimateFinishEffect;
 
         private IPlayerState currentState;
         private IPlayerState prevState;

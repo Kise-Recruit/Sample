@@ -61,7 +61,7 @@ MonoBehaviour:
     m_To: ChangeCamera_6
     m_Blend:
       m_Style: 4
-      m_Time: 2
+      m_Time: 1
       m_CustomCurve:
         serializedVersion: 2
         m_Curve: []
